@@ -1,6 +1,6 @@
 ﻿namespace OFODBGUI;
 
-partial class Form1
+partial class MainPortal
 {
     /// <summary>
     ///  Required designer variable.

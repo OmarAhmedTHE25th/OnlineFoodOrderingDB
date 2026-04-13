@@ -1,8 +1,8 @@
 namespace OFODBGUI;
 
-public partial class Form1 : Form
+public partial class MainPortal : Form
 {
-    public Form1()
+    public MainPortal()
     {
         InitializeComponent();
     }
