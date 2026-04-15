@@ -39,13 +39,14 @@ partial class OffersUI
         tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
         delete = new System.Windows.Forms.Button();
         outputbox = new System.Windows.Forms.RichTextBox();
+        BackBtn = new System.Windows.Forms.Button();
         ((System.ComponentModel.ISupportInitialize)dataview).BeginInit();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
         // 
         // dataview
         // 
-        dataview.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        dataview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         dataview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataview.Location = new System.Drawing.Point(2, 38);
         dataview.Name = "dataview";
@@ -54,7 +55,7 @@ partial class OffersUI
         dataview.TabIndex = 0;
         dataview.Text = "dataGridView1";
         // 
-        // MenuLabel
+        // OfferLabel
         // 
         OfferLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
         OfferLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
@@ -68,7 +69,7 @@ partial class OffersUI
         // insert
         // 
         insert.Anchor = System.Windows.Forms.AnchorStyles.None;
-        insert.Location = new System.Drawing.Point(129, 3);
+        insert.Location = new System.Drawing.Point(47, 3);
         insert.Name = "insert";
         insert.Size = new System.Drawing.Size(157, 73);
         insert.TabIndex = 2;
@@ -79,7 +80,7 @@ partial class OffersUI
         // update
         // 
         update.Anchor = System.Windows.Forms.AnchorStyles.None;
-        update.Location = new System.Drawing.Point(544, 3);
+        update.Location = new System.Drawing.Point(298, 3);
         update.Name = "update";
         update.Size = new System.Drawing.Size(157, 73);
         update.TabIndex = 3;
@@ -89,28 +90,30 @@ partial class OffersUI
         // 
         // manageItems
         // 
-        this.manageItems.Anchor = System.Windows.Forms.AnchorStyles.None;
-        this.manageItems.Location = new System.Drawing.Point(959, 3);
-        this.manageItems.Name = "manageItems";
-        this.manageItems.Size = new System.Drawing.Size(157, 73);
-        this.manageItems.TabIndex = 5;
-        this.manageItems.Text = "Manage Items";
-        this.manageItems.UseVisualStyleBackColor = true;
-        this.manageItems.Click += new System.EventHandler(this.manageItems_Click);
+        manageItems.Anchor = System.Windows.Forms.AnchorStyles.None;
+        manageItems.Location = new System.Drawing.Point(800, 3);
+        manageItems.Name = "manageItems";
+        manageItems.Size = new System.Drawing.Size(157, 73);
+        manageItems.TabIndex = 5;
+        manageItems.Text = "Manage Items";
+        manageItems.UseVisualStyleBackColor = true;
+        manageItems.Click += manageItems_Click;
         // 
         // tableLayoutPanel1
         // 
-        tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         tableLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-        tableLayoutPanel1.ColumnCount = 4;
+        tableLayoutPanel1.ColumnCount = 5;
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+        tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
+        tableLayoutPanel1.Controls.Add(BackBtn, 4, 0);
         tableLayoutPanel1.Controls.Add(delete, 2, 0);
         tableLayoutPanel1.Controls.Add(insert, 0, 0);
         tableLayoutPanel1.Controls.Add(update, 1, 0);
-        tableLayoutPanel1.Controls.Add(this.manageItems, 3, 0);
+        tableLayoutPanel1.Controls.Add(manageItems, 3, 0);
         tableLayoutPanel1.Location = new System.Drawing.Point(2, 311);
         tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -122,7 +125,7 @@ partial class OffersUI
         // delete
         // 
         delete.Anchor = System.Windows.Forms.AnchorStyles.None;
-        delete.Location = new System.Drawing.Point(959, 3);
+        delete.Location = new System.Drawing.Point(549, 3);
         delete.Name = "delete";
         delete.Size = new System.Drawing.Size(157, 73);
         delete.TabIndex = 4;
@@ -132,13 +135,24 @@ partial class OffersUI
         // 
         // outputbox
         // 
-        outputbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        outputbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         outputbox.Location = new System.Drawing.Point(2, 468);
         outputbox.Name = "outputbox";
         outputbox.ReadOnly = true;
         outputbox.Size = new System.Drawing.Size(1242, 222);
         outputbox.TabIndex = 7;
         outputbox.Text = "";
+        // 
+        // BackBtn
+        // 
+        BackBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+        BackBtn.Location = new System.Drawing.Point(1046, 3);
+        BackBtn.Name = "BackBtn";
+        BackBtn.Size = new System.Drawing.Size(157, 73);
+        BackBtn.TabIndex = 8;
+        BackBtn.Text = "Back";
+        BackBtn.UseVisualStyleBackColor = true;
+        BackBtn.Click += BackBtn_Click;
         // 
         // OffersUI
         // 
@@ -155,6 +169,8 @@ partial class OffersUI
         tableLayoutPanel1.ResumeLayout(false);
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button BackBtn;
 
     private System.Windows.Forms.RichTextBox outputbox;
 

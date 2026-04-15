@@ -122,4 +122,10 @@ public partial class MenuUI : Form
             dataview.DataSource = data;
         }
     }
+
+    private void BackBtn_Click(object sender, EventArgs e)
+    {
+        Close();
+        
+    }
 }

@@ -38,13 +38,14 @@ partial class MenuUI
         tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
         delete = new System.Windows.Forms.Button();
         outputbox = new System.Windows.Forms.RichTextBox();
+        BackBtn = new System.Windows.Forms.Button();
         ((System.ComponentModel.ISupportInitialize)dataview).BeginInit();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
         // 
         // dataview
         // 
-        dataview.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        dataview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         dataview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataview.Location = new System.Drawing.Point(2, 38);
         dataview.Name = "dataview";
@@ -67,7 +68,7 @@ partial class MenuUI
         // insert
         // 
         insert.Anchor = System.Windows.Forms.AnchorStyles.None;
-        insert.Location = new System.Drawing.Point(129, 3);
+        insert.Location = new System.Drawing.Point(80, 3);
         insert.Name = "insert";
         insert.Size = new System.Drawing.Size(157, 73);
         insert.TabIndex = 2;
@@ -78,7 +79,7 @@ partial class MenuUI
         // update
         // 
         update.Anchor = System.Windows.Forms.AnchorStyles.None;
-        update.Location = new System.Drawing.Point(544, 3);
+        update.Location = new System.Drawing.Point(397, 3);
         update.Name = "update";
         update.Size = new System.Drawing.Size(157, 73);
         update.TabIndex = 3;
@@ -88,15 +89,17 @@ partial class MenuUI
         // 
         // tableLayoutPanel1
         // 
-        tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         tableLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-        tableLayoutPanel1.ColumnCount = 3;
+        tableLayoutPanel1.ColumnCount = 4;
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
         tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+        tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 294F));
         tableLayoutPanel1.Controls.Add(delete, 2, 0);
         tableLayoutPanel1.Controls.Add(insert, 0, 0);
         tableLayoutPanel1.Controls.Add(update, 1, 0);
+        tableLayoutPanel1.Controls.Add(BackBtn, 3, 0);
         tableLayoutPanel1.Location = new System.Drawing.Point(2, 311);
         tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -108,7 +111,7 @@ partial class MenuUI
         // delete
         // 
         delete.Anchor = System.Windows.Forms.AnchorStyles.None;
-        delete.Location = new System.Drawing.Point(959, 3);
+        delete.Location = new System.Drawing.Point(714, 3);
         delete.Name = "delete";
         delete.Size = new System.Drawing.Size(157, 73);
         delete.TabIndex = 4;
@@ -118,13 +121,24 @@ partial class MenuUI
         // 
         // outputbox
         // 
-        outputbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+        outputbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
         outputbox.Location = new System.Drawing.Point(2, 468);
         outputbox.Name = "outputbox";
         outputbox.ReadOnly = true;
         outputbox.Size = new System.Drawing.Size(1242, 222);
         outputbox.TabIndex = 7;
         outputbox.Text = "";
+        // 
+        // BackBtn
+        // 
+        BackBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+        BackBtn.Location = new System.Drawing.Point(1019, 3);
+        BackBtn.Name = "BackBtn";
+        BackBtn.Size = new System.Drawing.Size(157, 73);
+        BackBtn.TabIndex = 10;
+        BackBtn.Text = "Back";
+        BackBtn.UseVisualStyleBackColor = true;
+        BackBtn.Click += BackBtn_Click;
         // 
         // MenuUI
         // 
@@ -141,6 +155,8 @@ partial class MenuUI
         tableLayoutPanel1.ResumeLayout(false);
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.Button BackBtn;
 
     private System.Windows.Forms.RichTextBox outputbox;
 

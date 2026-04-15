@@ -9,7 +9,6 @@ static class EntryPoint
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new OffersUI());
-        Application.Run(new MenuUI());
+        Application.Run(new MainPortal());
     }
 }
