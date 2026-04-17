@@ -1,4 +1,5 @@
 using OFODBGUI.Models;
+using OFODBGUI.Models;
 
 namespace OFODBGUI;
 
@@ -19,5 +20,11 @@ public partial class MainPortal : Form
     {
         var offersForm = new OffersUI();
         offersForm.ShowDialog();
+    }
+
+    private void OrdersBtn_Click(object sender, EventArgs e)
+    {
+        var ordersForm = new OFODBGUI.Orders_and_orderItem.OrdersUI();
+        ordersForm.ShowDialog();
     }
 }

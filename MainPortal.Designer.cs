@@ -82,6 +82,7 @@ partial class MainPortal
         OrdersBtn.TabIndex = 4;
         OrdersBtn.Text = "Orders Form";
         OrdersBtn.UseVisualStyleBackColor = true;
+        OrdersBtn.Click += OrdersBtn_Click;
         // 
         // MenuBtn
         // 
