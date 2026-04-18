@@ -11,7 +11,7 @@ namespace OFODBGUI.Orders_and_orderItem;
 public partial class OrdersUI : Form
 {
     private NeondbContext _context;
-    private List<OFODBGUI.Models.MenuItem> _cart = new();
+    private List<MenuItem> _cart = new();
 
     public OrdersUI()
     {
@@ -63,7 +63,7 @@ public partial class OrdersUI : Form
 
     private void btnAddToCart_Click(object sender, EventArgs e)
     {
-        if (cmbMenu.SelectedItem is OFODBGUI.Models.MenuItem item)
+        if (cmbMenu.SelectedItem is MenuItem item)
         {
             _cart.Add(item);
             UpdateCartList();
@@ -73,12 +73,15 @@ public partial class OrdersUI : Form
     private void UpdateCartList()
     {
         lstCart.Items.Clear();
+        decimal total = 0;
         foreach (var item in _cart.GroupBy(i => i.Itemid))
         {
             var count = item.Count();
             var first = item.First();
-            lstCart.Items.Add($"{count}x {first.Itemname}");
+            lstCart.Items.Add($"{count}x {first.Itemname} - ${first.Price * count}");
+            total += (first.Price ?? 0) * count;
         }
+        lblTotal.Text = $"Total Order: ${total:F2}";
     }
 
     private void btnPlaceOrder_Click(object sender, EventArgs e)
@@ -146,7 +149,7 @@ public partial class OrdersUI : Form
                 Quantity = itemGroup.Count(),
                 // Note: assuming MenuItem has no price property since it was not generated. 
                 // We're leaving Price to null or calculating it later
-                Price = 0
+                Price = itemGroup.Key.Price
             };
             _context.OrderItems.Add(orderItem);
         }

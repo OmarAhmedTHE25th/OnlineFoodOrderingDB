@@ -112,6 +112,7 @@ public partial class MenuUI : Form
                 {
                     m.Itemid,
                     m.Itemname,
+                    m.Price,
                     m.Itemdescription,
                     m.Category,
                     m.Availability,

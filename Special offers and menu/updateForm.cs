@@ -15,6 +15,7 @@ public partial class updateForm : Form
     {
         textBoxId.Text = _item.Itemid.ToString();
         textBoxName.Text = _item.Itemname;
+        textBoxPrice.Text = _item.Price.ToString();
         textBoxDescription.Text = _item.Itemdescription;
         textBoxCategory.Text = _item.Category;
         checkBoxAvailability.Checked = _item.Availability ?? false;
@@ -30,6 +31,12 @@ public partial class updateForm : Form
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(textBoxPrice.Text) || !int.TryParse(textBoxPrice.Text, out int price))
+        {
+            MessageBox.Show("Please enter a valid numeric Price.");
+            return;
+        }
+
         try
         {
             using (var context = new NeondbContext())
@@ -38,6 +45,7 @@ public partial class updateForm : Form
                 if (itemToUpdate != null)
                 {
                     itemToUpdate.Itemname = textBoxName.Text;
+                    itemToUpdate.Price = price;
                     itemToUpdate.Itemdescription = textBoxDescription.Text;
                     itemToUpdate.Category = textBoxCategory.Text;
                     itemToUpdate.Availability = checkBoxAvailability.Checked;

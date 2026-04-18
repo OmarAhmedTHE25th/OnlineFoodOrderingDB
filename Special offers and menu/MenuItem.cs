@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OFODBGUI.Models;
 
-public partial class MenuItem
+public class MenuItem
 {
     public int Itemid { get; set; }
 
@@ -14,6 +14,7 @@ public partial class MenuItem
     public string? Category { get; set; }
 
     public bool? Availability { get; set; }
+    public int? Price {get; set;}
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 

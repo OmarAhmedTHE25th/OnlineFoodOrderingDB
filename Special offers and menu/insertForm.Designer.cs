@@ -67,21 +67,24 @@ partial class insertForm
         tableLayoutPanel1.Controls.Add(textBoxId, 1, 0);
         tableLayoutPanel1.Controls.Add(labelName, 0, 1);
         tableLayoutPanel1.Controls.Add(textBoxName, 1, 1);
-        tableLayoutPanel1.Controls.Add(labelDescription, 0, 2);
-        tableLayoutPanel1.Controls.Add(textBoxDescription, 1, 2);
-        tableLayoutPanel1.Controls.Add(labelCategory, 0, 3);
-        tableLayoutPanel1.Controls.Add(textBoxCategory, 1, 3);
-        tableLayoutPanel1.Controls.Add(labelAvailability, 0, 4);
-        tableLayoutPanel1.Controls.Add(checkBoxAvailability, 1, 4);
+        tableLayoutPanel1.Controls.Add(labelPrice, 0, 2);
+        tableLayoutPanel1.Controls.Add(textBoxPrice, 1, 2);
+        tableLayoutPanel1.Controls.Add(labelDescription, 0, 3);
+        tableLayoutPanel1.Controls.Add(textBoxDescription, 1, 3);
+        tableLayoutPanel1.Controls.Add(labelCategory, 0, 4);
+        tableLayoutPanel1.Controls.Add(textBoxCategory, 1, 4);
+        tableLayoutPanel1.Controls.Add(labelAvailability, 0, 5);
+        tableLayoutPanel1.Controls.Add(checkBoxAvailability, 1, 5);
         tableLayoutPanel1.Location = new System.Drawing.Point(50, 60);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
-        tableLayoutPanel1.RowCount = 5;
+        tableLayoutPanel1.RowCount = 6;
+        tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
         tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
         tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
         tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
         tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
         tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-        tableLayoutPanel1.Size = new System.Drawing.Size(700, 240);
+        tableLayoutPanel1.Size = new System.Drawing.Size(700, 273);
         tableLayoutPanel1.TabIndex = 1;
         // 
         // labelId
@@ -120,50 +123,68 @@ partial class insertForm
         textBoxName.Size = new System.Drawing.Size(414, 31);
         textBoxName.TabIndex = 3;
         // 
+        // labelPrice
+        // 
+        labelPrice.Dock = System.Windows.Forms.DockStyle.Fill;
+        labelPrice.Location = new System.Drawing.Point(3, 80);
+        labelPrice.Name = "labelPrice";
+        labelPrice.Size = new System.Drawing.Size(274, 40);
+        labelPrice.TabIndex = 4;
+        labelPrice.Text = "Price:";
+        labelPrice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+        // 
+        // textBoxPrice
+        // 
+        textBoxPrice.Dock = System.Windows.Forms.DockStyle.Fill;
+        textBoxPrice.Location = new System.Drawing.Point(283, 83);
+        textBoxPrice.Name = "textBoxPrice";
+        textBoxPrice.Size = new System.Drawing.Size(414, 31);
+        textBoxPrice.TabIndex = 5;
+        // 
         // labelDescription
         // 
         labelDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-        labelDescription.Location = new System.Drawing.Point(3, 80);
+        labelDescription.Location = new System.Drawing.Point(3, 120);
         labelDescription.Name = "labelDescription";
         labelDescription.Size = new System.Drawing.Size(274, 80);
-        labelDescription.TabIndex = 4;
+        labelDescription.TabIndex = 6;
         labelDescription.Text = "Description:";
         labelDescription.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
         // 
         // textBoxDescription
         // 
         textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-        textBoxDescription.Location = new System.Drawing.Point(283, 83);
+        textBoxDescription.Location = new System.Drawing.Point(283, 123);
         textBoxDescription.Multiline = true;
         textBoxDescription.Name = "textBoxDescription";
         textBoxDescription.Size = new System.Drawing.Size(414, 74);
-        textBoxDescription.TabIndex = 5;
+        textBoxDescription.TabIndex = 7;
         // 
         // labelCategory
         // 
         labelCategory.Dock = System.Windows.Forms.DockStyle.Fill;
-        labelCategory.Location = new System.Drawing.Point(3, 160);
+        labelCategory.Location = new System.Drawing.Point(3, 200);
         labelCategory.Name = "labelCategory";
         labelCategory.Size = new System.Drawing.Size(274, 40);
-        labelCategory.TabIndex = 6;
+        labelCategory.TabIndex = 8;
         labelCategory.Text = "Category:";
         labelCategory.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
         // 
         // textBoxCategory
         // 
         textBoxCategory.Dock = System.Windows.Forms.DockStyle.Fill;
-        textBoxCategory.Location = new System.Drawing.Point(283, 163);
+        textBoxCategory.Location = new System.Drawing.Point(283, 203);
         textBoxCategory.Name = "textBoxCategory";
         textBoxCategory.Size = new System.Drawing.Size(414, 31);
-        textBoxCategory.TabIndex = 7;
+        textBoxCategory.TabIndex = 9;
         // 
         // labelAvailability
         // 
         labelAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
-        labelAvailability.Location = new System.Drawing.Point(3, 200);
+        labelAvailability.Location = new System.Drawing.Point(3, 240);
         labelAvailability.Name = "labelAvailability";
         labelAvailability.Size = new System.Drawing.Size(274, 40);
-        labelAvailability.TabIndex = 8;
+        labelAvailability.TabIndex = 10;
         labelAvailability.Text = "Available:";
         labelAvailability.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
         // 
@@ -171,15 +192,15 @@ partial class insertForm
         // 
         checkBoxAvailability.AutoSize = true;
         checkBoxAvailability.Dock = System.Windows.Forms.DockStyle.Fill;
-        checkBoxAvailability.Location = new System.Drawing.Point(283, 203);
+        checkBoxAvailability.Location = new System.Drawing.Point(283, 243);
         checkBoxAvailability.Name = "checkBoxAvailability";
         checkBoxAvailability.Size = new System.Drawing.Size(414, 34);
-        checkBoxAvailability.TabIndex = 9;
+        checkBoxAvailability.TabIndex = 11;
         checkBoxAvailability.UseVisualStyleBackColor = true;
         // 
         // buttonInsert
         // 
-        buttonInsert.Location = new System.Drawing.Point(325, 320);
+        buttonInsert.Location = new System.Drawing.Point(324, 398);
         buttonInsert.Name = "buttonInsert";
         buttonInsert.Size = new System.Drawing.Size(150, 50);
         buttonInsert.TabIndex = 2;
@@ -191,7 +212,7 @@ partial class insertForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(800, 400);
+        ClientSize = new System.Drawing.Size(894, 549);
         Controls.Add(buttonInsert);
         Controls.Add(tableLayoutPanel1);
         Controls.Add(insertLabel);
@@ -205,6 +226,8 @@ partial class insertForm
     private System.Windows.Forms.TextBox textBoxId;
     private System.Windows.Forms.Label labelName;
     private System.Windows.Forms.TextBox textBoxName;
+    private System.Windows.Forms.Label labelPrice;
+    private System.Windows.Forms.TextBox textBoxPrice;
     private System.Windows.Forms.Label labelDescription;
     private System.Windows.Forms.TextBox textBoxDescription;
     private System.Windows.Forms.Label labelCategory;

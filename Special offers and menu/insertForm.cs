@@ -23,6 +23,12 @@ public partial class insertForm : Form
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(textBoxPrice.Text) || !int.TryParse(textBoxPrice.Text, out int price))
+        {
+            MessageBox.Show("Please enter a valid numeric Price.");
+            return;
+        }
+
         try
         {
             using (var context = new NeondbContext())
@@ -33,6 +39,7 @@ public partial class insertForm : Form
                     Itemname = textBoxName.Text,
                     Itemdescription = textBoxDescription.Text,
                     Category = textBoxCategory.Text,
+                    Price = price,
                     Availability = checkBoxAvailability.Checked
                 };
 
@@ -49,4 +56,6 @@ public partial class insertForm : Form
             MessageBox.Show($"Error inserting menu item: {ex.Message}");
         }
     }
+
+  
 }
