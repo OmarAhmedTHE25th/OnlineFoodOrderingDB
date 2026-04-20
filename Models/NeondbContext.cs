@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -104,7 +104,7 @@ public partial class NeondbContext : DbContext
         });
 
         modelBuilder.Entity<DeliveryGuy>(entity =>
-        { 
+        {  
             entity.HasKey(e => e.Deliveryguysid).HasName("delivery_guy_pkey");
 
             entity.ToTable("delivery_guy");
