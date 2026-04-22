@@ -55,15 +55,17 @@ partial class MainPortal
         BranchBtn.TabIndex = 1;
         BranchBtn.Text = "Branch Form";
         BranchBtn.UseVisualStyleBackColor = true;
-        // 
+        BranchBtn.Click += BranchBtn_Click;
+        //
         // DeliveryGuyBtn
         // 
         DeliveryGuyBtn.Location = new System.Drawing.Point(725, 12);
         DeliveryGuyBtn.Name = "DeliveryGuyBtn";
         DeliveryGuyBtn.Size = new System.Drawing.Size(226, 94);
         DeliveryGuyBtn.TabIndex = 2;
-        DeliveryGuyBtn.Text = "Delivery Guy From";
+        DeliveryGuyBtn.Text = "Delivery Guy Form";
         DeliveryGuyBtn.UseVisualStyleBackColor = true;
+        DeliveryGuyBtn.Click += DeliveryGuyBtn_Click;
         // 
         // button4
         // 
