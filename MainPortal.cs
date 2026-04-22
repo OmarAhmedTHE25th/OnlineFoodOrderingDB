@@ -27,4 +27,16 @@ public partial class MainPortal : Form
         var ordersForm = new OFODBGUI.Orders_and_orderItem.OrdersUI();
         ordersForm.ShowDialog();
     }
+
+    private void BranchBtn_Click(object sender, EventArgs e)
+    {
+        var branchForm = new BranchUI();
+        branchForm.ShowDialog();
+    }
+
+    private void DeliveryGuyBtn_Click(object sender, EventArgs e)
+    {
+        var deliveryForm = new DeliveryGuyUI();
+        deliveryForm.ShowDialog();
+    }
 }
