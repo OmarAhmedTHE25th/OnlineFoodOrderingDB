@@ -1,5 +1,4 @@
 using OFODBGUI.Models;
-using OFODBGUI.Models;
 
 namespace OFODBGUI;
 
@@ -10,6 +9,12 @@ public partial class MainPortal : Form
         InitializeComponent();
     }
 
+    private void CustomerBtn_Click(object sender, EventArgs e)
+    {
+        var customerForm = new OFODBGUI.Customer.CustomerUI();
+        customerForm.ShowDialog();
+    }
+
     private void MenuBtn_Click(object sender, EventArgs e)
     {
         var menuForm = new MenuUI();
@@ -18,8 +23,8 @@ public partial class MainPortal : Form
 
     private void OffersBtn_Click(object sender, EventArgs e)
     {
-        var offersForm = new OffersUI();
-        offersForm.ShowDialog();
+        // Temporary fix to remove error
+        MessageBox.Show("Special Offers form is not ready yet.");
     }
 
     private void OrdersBtn_Click(object sender, EventArgs e)
@@ -27,4 +32,5 @@ public partial class MainPortal : Form
         var ordersForm = new OFODBGUI.Orders_and_orderItem.OrdersUI();
         ordersForm.ShowDialog();
     }
+
 }

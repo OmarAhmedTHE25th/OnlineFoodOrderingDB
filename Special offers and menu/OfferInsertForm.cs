@@ -6,7 +6,8 @@ public partial class OfferInsertForm : Form
     {
         InitializeComponent();
     }
-
+    [System.ComponentModel.Browsable(false)]
+    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
     public SpecialOffer? NewOffer { get; private set; }
 
     private void buttonInsert_Click(object sender, EventArgs e)

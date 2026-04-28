@@ -29,56 +29,58 @@ partial class MainPortal
     /// </summary>
     private void InitializeComponent()
     {
-        CustomerBtn = new System.Windows.Forms.Button();
-        BranchBtn = new System.Windows.Forms.Button();
-        DeliveryGuyBtn = new System.Windows.Forms.Button();
-        button4 = new System.Windows.Forms.Button();
-        OrdersBtn = new System.Windows.Forms.Button();
-        MenuBtn = new System.Windows.Forms.Button();
-        OffersBtn = new System.Windows.Forms.Button();
+        CustomerBtn = new Button();
+        BranchBtn = new Button();
+        DeliveryGuyBtn = new Button();
+        button4 = new Button();
+        OrdersBtn = new Button();
+        MenuBtn = new Button();
+        OffersBtn = new Button();
         SuspendLayout();
         // 
         // CustomerBtn
         // 
-        CustomerBtn.Location = new System.Drawing.Point(233, 12);
+        CustomerBtn.Location = new Point(233, 12);
         CustomerBtn.Name = "CustomerBtn";
-        CustomerBtn.Size = new System.Drawing.Size(226, 94);
+        CustomerBtn.Size = new Size(226, 94);
         CustomerBtn.TabIndex = 0;
         CustomerBtn.Text = "Customer Form";
         CustomerBtn.UseVisualStyleBackColor = true;
+        CustomerBtn.Click += CustomerBtn_Click;
+        CustomerBtn.MouseClick += CustomerBtn_Click;
         // 
         // BranchBtn
         // 
-        BranchBtn.Location = new System.Drawing.Point(468, 12);
+        BranchBtn.Location = new Point(468, 12);
         BranchBtn.Name = "BranchBtn";
-        BranchBtn.Size = new System.Drawing.Size(226, 94);
+        BranchBtn.Size = new Size(226, 94);
         BranchBtn.TabIndex = 1;
         BranchBtn.Text = "Branch Form";
         BranchBtn.UseVisualStyleBackColor = true;
         // 
         // DeliveryGuyBtn
         // 
-        DeliveryGuyBtn.Location = new System.Drawing.Point(725, 12);
+        DeliveryGuyBtn.Location = new Point(725, 12);
         DeliveryGuyBtn.Name = "DeliveryGuyBtn";
-        DeliveryGuyBtn.Size = new System.Drawing.Size(226, 94);
+        DeliveryGuyBtn.Size = new Size(226, 94);
         DeliveryGuyBtn.TabIndex = 2;
         DeliveryGuyBtn.Text = "Delivery Guy From";
         DeliveryGuyBtn.UseVisualStyleBackColor = true;
         // 
         // button4
         // 
-        button4.Location = new System.Drawing.Point(468, 116);
+        button4.Location = new Point(468, 116);
         button4.Name = "button4";
-        button4.Size = new System.Drawing.Size(226, 94);
+        button4.Size = new Size(226, 94);
         button4.TabIndex = 3;
         button4.Text = "button4";
         button4.UseVisualStyleBackColor = true;
         // 
         // OrdersBtn
         // 
-        OrdersBtn.Location = new System.Drawing.Point(233, 116);
+        OrdersBtn.Location = new Point(233, 116);
         OrdersBtn.Name = "OrdersBtn";
-        OrdersBtn.Size = new System.Drawing.Size(226, 94);
+        OrdersBtn.Size = new Size(226, 94);
         OrdersBtn.TabIndex = 4;
         OrdersBtn.Text = "Orders Form";
         OrdersBtn.UseVisualStyleBackColor = true;
@@ -86,9 +88,9 @@ partial class MainPortal
         // 
         // MenuBtn
         // 
-        MenuBtn.Location = new System.Drawing.Point(725, 116);
+        MenuBtn.Location = new Point(725, 116);
         MenuBtn.Name = "MenuBtn";
-        MenuBtn.Size = new System.Drawing.Size(226, 94);
+        MenuBtn.Size = new Size(226, 94);
         MenuBtn.TabIndex = 5;
         MenuBtn.Text = "Menu Form";
         MenuBtn.UseVisualStyleBackColor = true;
@@ -96,9 +98,9 @@ partial class MainPortal
         // 
         // OffersBtn
         // 
-        OffersBtn.Location = new System.Drawing.Point(468, 238);
+        OffersBtn.Location = new Point(468, 238);
         OffersBtn.Name = "OffersBtn";
-        OffersBtn.Size = new System.Drawing.Size(226, 94);
+        OffersBtn.Size = new Size(226, 94);
         OffersBtn.TabIndex = 6;
         OffersBtn.Text = "Special Offers Form";
         OffersBtn.UseVisualStyleBackColor = true;
@@ -106,9 +108,9 @@ partial class MainPortal
         // 
         // MainPortal
         // 
-        AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
-        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(1280, 663);
+        AutoScaleDimensions = new SizeF(10F, 25F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1280, 663);
         Controls.Add(OffersBtn);
         Controls.Add(MenuBtn);
         Controls.Add(OrdersBtn);
@@ -116,6 +118,7 @@ partial class MainPortal
         Controls.Add(DeliveryGuyBtn);
         Controls.Add(BranchBtn);
         Controls.Add(CustomerBtn);
+        Name = "MainPortal";
         Text = "Main Portal";
         ResumeLayout(false);
     }
