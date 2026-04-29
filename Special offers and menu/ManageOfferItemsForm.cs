@@ -5,6 +5,8 @@ namespace OFODBGUI.Models;
 public partial class ManageOfferItemsForm : Form
 {
     private readonly int _offerId;
+    [System.ComponentModel.Browsable(false)]
+    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
     public List<int> SelectedItemIds { get; private set; } = new();
 
     public ManageOfferItemsForm(int offerId)

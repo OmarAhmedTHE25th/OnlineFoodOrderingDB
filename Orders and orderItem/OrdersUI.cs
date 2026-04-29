@@ -110,7 +110,7 @@ public partial class OrdersUI : Form
         var customer = _context.Customers.FirstOrDefault(c => c.Phonenumber == phone);
         if (customer == null)
         {
-            customer = new Customer
+             customer = new OFODBGUI.Models.Customer
             {
                 Customersid = GetNextCustomerId(),
                 Phonenumber = phone,

@@ -6,7 +6,8 @@ public partial class insertForm : Form
     {
         InitializeComponent();
     }
-
+    [System.ComponentModel.Browsable(false)]
+    [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
     public MenuItem? NewItem { get; private set; }
 
     private void buttonInsert_Click(object sender, EventArgs e)
