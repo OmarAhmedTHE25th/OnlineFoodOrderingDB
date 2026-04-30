@@ -57,7 +57,7 @@ partial class OfferUpdateForm
         updateLabel.Name = "updateLabel";
         updateLabel.Size = new System.Drawing.Size(258, 49);
         updateLabel.TabIndex = 0;
-        updateLabel.Text = "Update Special Offer";
+        updateLabel.Text = "Update Offer";
         updateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
         // tableLayoutPanel1

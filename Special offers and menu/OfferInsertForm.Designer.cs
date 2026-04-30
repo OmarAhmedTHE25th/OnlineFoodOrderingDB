@@ -57,7 +57,7 @@ partial class OfferInsertForm
         insertLabel.Name = "insertLabel";
         insertLabel.Size = new System.Drawing.Size(258, 49);
         insertLabel.TabIndex = 0;
-        insertLabel.Text = "Insert Special Offer";
+        insertLabel.Text = "Insert Offer";
         insertLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
         // 
         // tableLayoutPanel1

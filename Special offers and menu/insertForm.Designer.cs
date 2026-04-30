@@ -45,6 +45,8 @@ partial class insertForm
         checkBoxAvailability = new System.Windows.Forms.CheckBox();
         buttonInsert = new System.Windows.Forms.Button();
         tableLayoutPanel1.SuspendLayout();
+        labelPrice = new System.Windows.Forms.Label();
+        textBoxPrice = new System.Windows.Forms.TextBox();
         SuspendLayout();
         // 
         // insertLabel

@@ -23,8 +23,9 @@ public partial class MainPortal : Form
 
     private void OffersBtn_Click(object sender, EventArgs e)
     {
-        // Temporary fix to remove error
-        MessageBox.Show("Special Offers form is not ready yet.");
+        var offerForm = new OffersUI();
+        offerForm.ShowDialog();
+
     }
 
     private void OrdersBtn_Click(object sender, EventArgs e)
