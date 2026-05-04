@@ -26,6 +26,8 @@ namespace OFODBGUI.Customer
             Text = "CustomerUI";
             ClientSize = new Size(1250, 700);
             StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
 
             Label title = new Label
             {

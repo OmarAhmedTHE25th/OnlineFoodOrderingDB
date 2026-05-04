@@ -12,7 +12,8 @@ public partial class OrdersUI : Form
 {
     private NeondbContext _context;
     private List<MenuItem> _cart = new();
-
+    private bool _isInitializing = true;
+    private bool _suppressSpecialOfferChange = false;   
     public OrdersUI()
     {
         InitializeComponent();
@@ -34,8 +35,17 @@ public partial class OrdersUI : Form
         cmbMenu.ValueMember = "Itemid";
         cmbMenu.DataSource = menu;
 
+        // Load special offers
+        var specialOffers = _context.SpecialOffers.ToList();
+        cmbSpecialOffer.DisplayMember = "Offername";
+        cmbSpecialOffer.ValueMember = "Offerid";
+        cmbSpecialOffer.DataSource = specialOffers;
+        cmbSpecialOffer.SelectedIndex = -1; // No selection by default
+
         cmbPayment.Items.AddRange(new string[] { "Cash", "Credit Card" });
         cmbPayment.SelectedIndex = 0;
+
+        _isInitializing = false; // Allow events after initialization
     }
 
     private void cmbBranch_SelectedIndexChanged(object sender, EventArgs e)
@@ -49,15 +59,48 @@ public partial class OrdersUI : Form
         }
     }
 
-    private void txtCustomerPhone_Leave(object sender, EventArgs e)
+    private void cmbSpecialOffer_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var phone = txtCustomerPhone.Text.Trim();
-        if (string.IsNullOrEmpty(phone)) return;
+        // Don't process events during form initialization or programmatic reset
+        if (_isInitializing || _suppressSpecialOfferChange)
+            return;
 
-        var customer = _context.Customers.FirstOrDefault(c => c.Phonenumber == phone);
+        if (cmbSpecialOffer.SelectedIndex == -1 || cmbSpecialOffer.SelectedValue == null)
+            return;
+
+        if (int.TryParse(cmbSpecialOffer.SelectedValue.ToString(), out var offerId))
+        {
+            var specialOffer = _context.SpecialOffers
+                .Include(o => o.Items)
+                .FirstOrDefault(o => o.Offerid == offerId);
+
+            if (specialOffer != null && specialOffer.Items.Any())
+            {
+                foreach (var item in specialOffer.Items)
+                {
+                    _cart.Add(item);
+                }
+
+                UpdateCartList();
+                MessageBox.Show($"Added {specialOffer.Items.Count} items from '{specialOffer.Offername}' to your cart!");
+            }
+        }
+    }
+
+    private void txtCustomerEmail_Leave(object sender, EventArgs e)
+    {
+        var email = txtCustomerEmail.Text.Trim();
+        if (string.IsNullOrEmpty(email)) return;
+
+        var customer = _context.Customers.FirstOrDefault(c => c.Customeremail == email);
         if (customer != null)
         {
-            txtCustomerEmail.Text = customer.Customeremail;
+            txtCustomerPhone.Text = customer.Phonenumber ?? "";
+        }
+        else
+        {
+            MessageBox.Show("Customer with this email does not exist.");
+            txtCustomerPhone.Text = "";
         }
     }
 
@@ -68,6 +111,81 @@ public partial class OrdersUI : Form
             _cart.Add(item);
             UpdateCartList();
         }
+    }
+
+    private void btnRemoveFromCart_Click(object sender, EventArgs e)
+    {
+        if (lstCart.SelectedIndex == -1)
+        {
+            MessageBox.Show("Please select an item to remove from the cart.");
+            return;
+        }
+
+        // Parse the selected item from display text
+        var selectedText = lstCart.SelectedItem.ToString();
+        // Format: "2x Burger - $20.00" -> extract item name
+        var parts = selectedText.Split(" - ");
+        if (parts.Length < 1)
+        {
+            MessageBox.Show("Error parsing cart item.");
+            return;
+        }
+
+        var itemInfo = parts[0]; // "2x Burger"
+        var itemNameParts = itemInfo.Split("x ");
+        if (itemNameParts.Length < 2)
+        {
+            MessageBox.Show("Error parsing item name.");
+            return;
+        }
+
+        var itemName = itemNameParts[1].Trim();
+        var itemsInCart = _cart.Where(c => c.Itemname == itemName).ToList();
+        var totalCount = itemsInCart.Count;
+
+        if (totalCount == 0)
+        {
+            MessageBox.Show("Item not found in cart.");
+            return;
+        }
+
+        int removeCount = totalCount;
+
+        if (totalCount > 1)
+        {
+            // Ask how many to remove
+            var input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"How many '{itemName}' do you want to remove? (You have {totalCount})",
+                "Remove Items",
+                "1");
+
+            if (string.IsNullOrEmpty(input))
+            {
+                return; // User canceled
+            }
+
+            if (!int.TryParse(input, out removeCount) || removeCount < 1 || removeCount > totalCount)
+            {
+                if (removeCount < 1)
+                    MessageBox.Show($"Invalid input. Please enter a number greater than 0.");
+                else
+                    MessageBox.Show($"Invalid input. You only have {totalCount} of this item.");
+                return;
+            }
+        }
+
+        // Remove the items
+        for (int i = 0; i < removeCount; i++)
+        {
+            var itemToRemove = _cart.FirstOrDefault(c => c.Itemname == itemName);
+            if (itemToRemove != null)
+            {
+                _cart.Remove(itemToRemove);
+            }
+        }
+
+        UpdateCartList();
+        MessageBox.Show($"Removed {removeCount} '{itemName}' from cart.");
     }
 
     private void UpdateCartList()
@@ -95,6 +213,12 @@ public partial class OrdersUI : Form
         var phone = txtCustomerPhone.Text.Trim();
         var email = txtCustomerEmail.Text.Trim();
 
+        if (string.IsNullOrEmpty(email))
+        {
+            MessageBox.Show("Please enter a customer email.");
+            return;
+        }
+
         if (string.IsNullOrEmpty(phone))
         {
             MessageBox.Show("Please enter a customer phone number.");
@@ -107,22 +231,19 @@ public partial class OrdersUI : Form
             return;
         }
 
-        var customer = _context.Customers.FirstOrDefault(c => c.Phonenumber == phone);
+        // Check if email exists
+        var customer = _context.Customers.FirstOrDefault(c => c.Customeremail == email);
         if (customer == null)
         {
-             customer = new OFODBGUI.Models.Customer
-            {
-                Customersid = GetNextCustomerId(),
-                Phonenumber = phone,
-                Customeremail = email,
-                Customerpassword = string.IsNullOrWhiteSpace(email) ? "DefaultPassword123" : email
-            };
-            _context.Customers.Add(customer);
-            _context.SaveChanges(); 
+            MessageBox.Show("Customer with this email does not exist. Please register first.");
+            return;
         }
-        else if (string.IsNullOrWhiteSpace(customer.Customeremail) && !string.IsNullOrWhiteSpace(email))
+
+        // Check if phone number matches
+        if (customer.Phonenumber != phone)
         {
-            customer.Customeremail = email;
+            MessageBox.Show("Phone number does not match the email on file. Please enter the correct phone number.");
+            return;
         }
 
         var newOrder = new Order
@@ -147,27 +268,38 @@ public partial class OrdersUI : Form
                 Orderid = newOrder.Orderid,
                 Itemid = itemGroup.Key.Itemid,
                 Quantity = itemGroup.Count(),
-                // Note: assuming MenuItem has no price property since it was not generated. 
-                // We're leaving Price to null or calculating it later
                 Price = itemGroup.Key.Price
             };
             _context.OrderItems.Add(orderItem);
         }
         _context.SaveChanges();
 
+        // If special offer is selected, add MinPoints to customer
+        if (cmbSpecialOffer.SelectedValue != null && int.TryParse(cmbSpecialOffer.SelectedValue.ToString(), out var offerId))
+        {
+            var specialOffer = _context.SpecialOffers.FirstOrDefault(o => o.Offerid == offerId);
+            if (specialOffer != null && specialOffer.Minpoints.HasValue)
+            {
+                customer.Totalpoints = (customer.Totalpoints ?? 0) + specialOffer.Minpoints.Value;
+                _context.Customers.Update(customer);
+                _context.SaveChanges();
+            }
+        }
+
         MessageBox.Show($"Order placed successfully! Order ID: {newOrder.Orderid}");
 
         // Reset form
+        _suppressSpecialOfferChange = true;
+
         _cart.Clear();
         UpdateCartList();
         txtCustomerPhone.Text = "";
         txtCustomerEmail.Text = "";
+        cmbSpecialOffer.SelectedIndex = -1;
+
+        _suppressSpecialOfferChange = false;
     }
 
-    private int GetNextCustomerId()
-    {
-        return _context.Customers.Any() ? _context.Customers.Max(c => c.Customersid) + 1 : 1;
-    }
 
     private int GetNextOrderId()
     {
@@ -180,9 +312,22 @@ public partial class OrdersUI : Form
         viewOrders.ShowDialog();
     }
 
+    private void btnBack_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         _context?.Dispose();
         base.OnClosed(e);
     }
-}
+
+        private void BackBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+    }
+
+    
