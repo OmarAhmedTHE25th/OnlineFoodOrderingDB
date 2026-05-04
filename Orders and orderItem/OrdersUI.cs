@@ -11,7 +11,17 @@ namespace OFODBGUI.Orders_and_orderItem;
 public partial class OrdersUI : Form
 {
     private NeondbContext _context;
-    private List<MenuItem> _cart = new();
+    private List<CartEntry> _cart = new();
+
+    public class CartEntry
+    {
+        public MenuItem? Item { get; set; }
+        public SpecialOffer? Offer { get; set; }
+        public bool IsOffer => Offer != null;
+        public string Name => IsOffer ? Offer!.Offername ?? "Unnamed Offer" : Item!.Itemname ?? "Unnamed Item";
+        public decimal Price => IsOffer ? (decimal)(Offer!.Items.Sum(i => i.Price ?? 0)) : (decimal)(Item!.Price ?? 0);
+        public int Points => IsOffer ? (Offer!.Minpoints ?? 0) : (int)Math.Floor((double)(Item!.Price ?? 0) / 2.0);
+    }
     private bool _isInitializing = true;
     private bool _suppressSpecialOfferChange = false;   
     public OrdersUI()
@@ -74,15 +84,11 @@ public partial class OrdersUI : Form
                 .Include(o => o.Items)
                 .FirstOrDefault(o => o.Offerid == offerId);
 
-            if (specialOffer != null && specialOffer.Items.Any())
+            if (specialOffer != null)
             {
-                foreach (var item in specialOffer.Items)
-                {
-                    _cart.Add(item);
-                }
-
+                _cart.Add(new CartEntry { Offer = specialOffer });
                 UpdateCartList();
-                MessageBox.Show($"Added {specialOffer.Items.Count} items from '{specialOffer.Offername}' to your cart!");
+                MessageBox.Show($"Added offer '{specialOffer.Offername}' to your cart!");
             }
         }
     }
@@ -108,7 +114,7 @@ public partial class OrdersUI : Form
     {
         if (cmbMenu.SelectedItem is MenuItem item)
         {
-            _cart.Add(item);
+            _cart.Add(new CartEntry { Item = item });
             UpdateCartList();
         }
     }
@@ -117,87 +123,63 @@ public partial class OrdersUI : Form
     {
         if (lstCart.SelectedIndex == -1)
         {
-            MessageBox.Show("Please select an item to remove from the cart.");
+            MessageBox.Show("Please select an item or offer to remove from the cart.");
             return;
         }
 
-        // Parse the selected item from display text
+        // The list is grouped by Name and Type (Item/Offer)
         var selectedText = lstCart.SelectedItem.ToString();
-        // Format: "2x Burger - $20.00" -> extract item name
-        var parts = selectedText.Split(" - ");
-        if (parts.Length < 1)
-        {
-            MessageBox.Show("Error parsing cart item.");
-            return;
-        }
+        var parts = selectedText.Split("x ", 2);
+        if (parts.Length < 2) return;
 
-        var itemInfo = parts[0]; // "2x Burger"
-        var itemNameParts = itemInfo.Split("x ");
-        if (itemNameParts.Length < 2)
-        {
-            MessageBox.Show("Error parsing item name.");
-            return;
-        }
+        var nameAndPrice = parts[1].Split(" - ", 2);
+        if (nameAndPrice.Length < 1) return;
 
-        var itemName = itemNameParts[1].Trim();
-        var itemsInCart = _cart.Where(c => c.Itemname == itemName).ToList();
-        var totalCount = itemsInCart.Count;
+        var entryName = nameAndPrice[0].Trim();
 
-        if (totalCount == 0)
-        {
-            MessageBox.Show("Item not found in cart.");
-            return;
-        }
+        // Find matches in _cart
+        var matches = _cart.Where(c => c.Name == entryName).ToList();
+        if (!matches.Any()) return;
 
-        int removeCount = totalCount;
+        int totalCount = matches.Count;
+        int removeCount = 1;
 
         if (totalCount > 1)
         {
-            // Ask how many to remove
             var input = Microsoft.VisualBasic.Interaction.InputBox(
-                $"How many '{itemName}' do you want to remove? (You have {totalCount})",
-                "Remove Items",
+                $"How many '{entryName}' do you want to remove? (You have {totalCount})",
+                "Remove Entry",
                 "1");
 
-            if (string.IsNullOrEmpty(input))
-            {
-                return; // User canceled
-            }
+            if (string.IsNullOrEmpty(input)) return;
 
             if (!int.TryParse(input, out removeCount) || removeCount < 1 || removeCount > totalCount)
             {
-                if (removeCount < 1)
-                    MessageBox.Show($"Invalid input. Please enter a number greater than 0.");
-                else
-                    MessageBox.Show($"Invalid input. You only have {totalCount} of this item.");
+                MessageBox.Show($"Invalid quantity.");
                 return;
             }
         }
 
-        // Remove the items
         for (int i = 0; i < removeCount; i++)
         {
-            var itemToRemove = _cart.FirstOrDefault(c => c.Itemname == itemName);
-            if (itemToRemove != null)
-            {
-                _cart.Remove(itemToRemove);
-            }
+            var toRemove = _cart.FirstOrDefault(c => c.Name == entryName);
+            if (toRemove != null) _cart.Remove(toRemove);
         }
 
         UpdateCartList();
-        MessageBox.Show($"Removed {removeCount} '{itemName}' from cart.");
+        MessageBox.Show($"Removed {removeCount} '{entryName}' from cart.");
     }
 
     private void UpdateCartList()
     {
         lstCart.Items.Clear();
         decimal total = 0;
-        foreach (var item in _cart.GroupBy(i => i.Itemid))
+        foreach (var group in _cart.GroupBy(c => new { c.Name, c.IsOffer }))
         {
-            var count = item.Count();
-            var first = item.First();
-            lstCart.Items.Add($"{count}x {first.Itemname} - ${first.Price * count}");
-            total += (first.Price ?? 0) * count;
+            var count = group.Count();
+            var first = group.First();
+            lstCart.Items.Add($"{count}x {first.Name} - ${first.Price * count}");
+            total += first.Price * count;
         }
         lblTotal.Text = $"Total Order: ${total:F2}";
     }
@@ -261,30 +243,55 @@ public partial class OrdersUI : Form
         _context.Orders.Add(newOrder);
         _context.SaveChanges(); 
 
-        foreach (var itemGroup in _cart.GroupBy(i => i))
+        var flatItems = new List<OrderItem>();
+        int totalPointsToAdd = 0;
+
+        foreach (var entry in _cart)
+        {
+            totalPointsToAdd += entry.Points;
+            
+            if (entry.IsOffer)
+            {
+                foreach (var item in entry.Offer!.Items)
+                {
+                    flatItems.Add(new OrderItem
+                    {
+                        Orderid = newOrder.Orderid,
+                        Itemid = item.Itemid,
+                        Quantity = 1,
+                        Price = (decimal)(item.Price ?? 0)
+                    });
+                }
+            }
+            else
+            {
+                flatItems.Add(new OrderItem
+                {
+                    Orderid = newOrder.Orderid,
+                    Itemid = entry.Item!.Itemid,
+                    Quantity = 1,
+                    Price = (decimal)(entry.Item!.Price ?? 0)
+                });
+            }
+        }
+
+        foreach (var itemGroup in flatItems.GroupBy(i => i.Itemid))
         {
             var orderItem = new OrderItem
             {
                 Orderid = newOrder.Orderid,
-                Itemid = itemGroup.Key.Itemid,
-                Quantity = itemGroup.Count(),
-                Price = itemGroup.Key.Price
+                Itemid = itemGroup.Key,
+                Quantity = itemGroup.Sum(i => i.Quantity),
+                Price = itemGroup.First().Price
             };
             _context.OrderItems.Add(orderItem);
         }
         _context.SaveChanges();
 
-        // If special offer is selected, add MinPoints to customer
-        if (cmbSpecialOffer.SelectedValue != null && int.TryParse(cmbSpecialOffer.SelectedValue.ToString(), out var offerId))
-        {
-            var specialOffer = _context.SpecialOffers.FirstOrDefault(o => o.Offerid == offerId);
-            if (specialOffer != null && specialOffer.Minpoints.HasValue)
-            {
-                customer.Totalpoints = (customer.Totalpoints ?? 0) + specialOffer.Minpoints.Value;
-                _context.Customers.Update(customer);
-                _context.SaveChanges();
-            }
-        }
+        // Update customer points
+        customer.Totalpoints = (customer.Totalpoints ?? 0) + totalPointsToAdd;
+        _context.Customers.Update(customer);
+        _context.SaveChanges();
 
         MessageBox.Show($"Order placed successfully! Order ID: {newOrder.Orderid}");
 

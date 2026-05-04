@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using OFODBGUI.Models;
 using ModelCustomer = OFODBGUI.Models.Customer;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace OFODBGUI.Customer
 {
@@ -18,7 +19,7 @@ namespace OFODBGUI.Customer
 
         private void CustomerUI_Load(object sender, EventArgs e)
         {
-            load_Table();
+            load_TableAsync();
         }
 
         private void BuildCustomerDesign()
@@ -27,16 +28,6 @@ namespace OFODBGUI.Customer
             ClientSize = new Size(1250, 700);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-
-            Label title = new Label
-            {
-                Text = "Customer",
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(560, 20)
-            };
-            Controls.Add(title);
 
             dataview.Location = new Point(20, 75);
             dataview.Size = new Size(1200, 300);
@@ -44,6 +35,10 @@ namespace OFODBGUI.Customer
             dataview.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataview.MultiSelect = false;
             dataview.ReadOnly = true;
+            dataview.RowHeadersVisible = false;
+            dataview.AllowUserToAddRows = false;
+            dataview.AllowUserToDeleteRows = false;
+            dataview.AllowUserToResizeRows = false;
 
             insert.Location = new Point(120, 415);
             update.Location = new Point(430, 415);
@@ -63,33 +58,37 @@ namespace OFODBGUI.Customer
             outputbox.ScrollToCaret();
         }
 
-        private void load_Table()
+        private async Task load_TableAsync()
         {
+            dataview.DataSource = null;
+            outputbox.AppendText("Loading customers..." + Environment.NewLine);
+
             using (var context = new NeondbContext())
             {
-                var data = context.Customers
+                var data = await context.Customers
+                    .AsNoTracking()
+                    .OrderBy(c => c.Customersid)
+                    .Take(100)
                     .Select(c => new
                     {
                         c.Customersid,
                         c.Customeremail,
-                        c.Customerpassword,
                         c.Phonenumber,
                         c.Country,
                         c.City,
-                        c.District,
-                        c.Streetname,
-                        c.Buildingno,
-                        c.Floorno,
-                        c.Apartmentno,
                         c.Totalpoints
                     })
-                    .ToList();
+                    .ToListAsync();
 
                 dataview.DataSource = data;
             }
+
+            outputbox.AppendText("Customers loaded." + Environment.NewLine);
+            outputbox.ScrollToCaret();
         }
 
-        private void insert_Click(object sender, EventArgs e)
+
+        private async void insert_Click(object sender, EventArgs e)
         {
             using (var form = new CustomerInputDialog())
             {
@@ -103,7 +102,7 @@ namespace OFODBGUI.Customer
 
                     MessageBox.Show("Customer inserted successfully!");
                     LogAction($"Inserted customer {form.CustomerData.Customeremail}");
-                    load_Table();
+                    load_TableAsync();
                 }
             }
         }
@@ -148,7 +147,7 @@ namespace OFODBGUI.Customer
 
                         MessageBox.Show("Customer updated successfully!");
                         LogAction($"Updated customer {customer.Customeremail}");
-                        load_Table();
+                        load_TableAsync();
                     }
                 }
             }
@@ -184,7 +183,7 @@ namespace OFODBGUI.Customer
 
                         MessageBox.Show("Customer deleted successfully!");
                         LogAction($"Deleted customer {email}");
-                        load_Table();
+                        load_TableAsync();
                     }
                 }
             }
@@ -230,7 +229,11 @@ namespace OFODBGUI.Customer
             AddField("Building", txtBuilding, 340);
             AddField("Floor", txtFloor, 380);
             AddField("Apartment", txtApartment, 420);
-            AddField("Points", txtPoints, 460);
+
+            if (customer != null)
+            {
+                AddField("Points", txtPoints, 460);
+            }
 
             Button saveBtn = new Button
             {
@@ -307,7 +310,10 @@ namespace OFODBGUI.Customer
             }
 
             int points = 0;
-            int.TryParse(txtPoints.Text, out points);
+            if (txtPoints.Visible)
+            {
+                int.TryParse(txtPoints.Text, out points);
+            }
 
             CustomerData = new global::OFODBGUI.Models.Customer
             {

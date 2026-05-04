@@ -11,8 +11,10 @@ public partial class MainPortal : Form
 
     private void CustomerBtn_Click(object sender, EventArgs e)
     {
-        var customerForm = new OFODBGUI.Customer.CustomerUI();
-        customerForm.ShowDialog();
+        using (var customerForm = new OFODBGUI.Customer.CustomerUI())
+        {
+            customerForm.ShowDialog();
+        }
     }
 
     private void MenuBtn_Click(object sender, EventArgs e)

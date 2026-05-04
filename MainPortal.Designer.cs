@@ -46,7 +46,7 @@ partial class MainPortal
         CustomerBtn.Text = "Customer Form";
         CustomerBtn.UseVisualStyleBackColor = true;
         CustomerBtn.Click += CustomerBtn_Click;
-        CustomerBtn.MouseClick += CustomerBtn_Click;
+        
         // 
         // BranchBtn
         // 
